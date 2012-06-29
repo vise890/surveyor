@@ -1,0 +1,95 @@
+@charset "UTF-8";
+/* CSS Document */
+span {
+	margin: 2px;
+	padding: 2px;
+}
+body {
+	font-size: 11px;
+	font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+	text-align: center;
+	background-color: #dcdcdc;
+}
+/*div {
+	text-align: left;
+}*/
+
+/*box {
+	border: 1pt dashed #959595;
+}*/
+/*fieldset {
+	margin-bottom: 5px;
+	margin-left: 0px;
+}*/
+.message {
+	text-align: center;
+	padding: 2px;
+	margin: 4px;
+	display: block;
+	float: left;
+	width: 15%;
+}
+.notification {
+	background-color: #fefb8c;
+	border: 2px solid orange;
+	color: black;
+}
+.success {
+	background-color: #7af951;
+	border: 2px solid green;
+	color: black;
+}
+/*label { 
+	display: inline;
+	width: 300px;
+	margin-right:7px;
+	text-align: right;
+}*/
+
+td label
+{
+	display: block;
+	width: 100%;
+	margin:0px;
+	text-align: right;
+	font-weight: bold;
+}
+td input
+{
+	display: block;
+	width: 100%;
+	margin:0px;
+	text-align: left;
+
+}
+td select
+{
+	display: block;
+	width: 100%;
+	margin:0px;
+	text-align: left;
+
+}
+td input[type="submit"]
+{
+	display: block;
+	width: 50%;
+	margin:0px;
+	text-align: left;
+
+}
+
+/* jQuery validation */
+
+input.error {
+
+	border: 1px solid #CC0000;
+	color: maroon;
+	background-color: #ff9593;
+}
+label.error {
+	color: maroon;
+	padding: 2px;
+	margin: 4px;
+	font-weight:bold;
+}

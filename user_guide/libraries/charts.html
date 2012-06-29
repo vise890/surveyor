@@ -1,0 +1,520 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Charts Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle.jpg" width="153" height="44" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide 1.6.3</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Chart Drawing Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+
+<div id="content">
+
+<div id="about">
+<h1>Charts - Chart Drawing Class</h1>
+<p><strong>Charts is a customizable CI library that generates 2D/3D pie,line and bar charts using the pChart/pData libraries.</strong></p>
+
+<h2>Setting-Up Charts</h2>
+
+<p>Place the <i>Charts.php</i> library file in the following directory (default libraries directory):</p>
+<code>www-root/system/application/libraries/</code>
+
+<p>Place the <i>charts.php</i> config file in your config directory</p>
+<code>www-root/system/application/config/</code>
+
+<p>Copy the <strong>classes</strong> and <strong>fonts</strong> directories somewhere in your webserver DocumentRoot.</p>
+<p>Create the directory <strong>charts</strong> somewhere in your webserver DocumentRoot.</p>
+
+<p>The charts directory is the place where Charts library will save png chart images, remember to set write permissions on it.</p>
+<p>If you use .htaccess rules to remove index.php from urls, remember to put the charts directory in your RewriteCond rule.</p>
+<code>
+RewriteEngine on <br>
+RewriteCond $1 !^(index\.php|images|js|css|.....|<strong>charts</strong>)<br>
+RewriteRule ^(.*)$ /index.php/$1<br>
+</code>
+<p class="important"><strong>Important:</strong> The Charts Library <strong>DOES NOT WORK</strong> with pChart versions previous than <strong>1.27d</strong>.This is because it uses some shadow features.</p>
+
+<p>The default places to store directories are now system/application directory for classes and fonts,the  DocumentRoot for charts.</p>
+
+<p>Then, load up the Charts library as you would with any other CodeIgniter library. There are two possible ways to do this. Directly from within your controller:</p>
+<code>$this->load->library('charts');</code>
+<p>Or, auto-load the Charts library from within <i>system/application/config/autoload.php</i>:</p>
+<code>$autoload['libraries'] = array('database', 'session', '<strong>charts</strong>');</code>
+<p>If charts,classes and fonts directories are not in the default, write new places in charts.php config file:</p>
+<code>
+$config['charts_ext_path'] = "system/application";<br>
+$config['charts_img_path'] = "charts";
+</code></div>
+<br/>
+<h1>Using Charts</h1>
+<h2>function pieChart(<var>$r</var>, <var>$percents</var>, <var>$legend</var>,<var>$imgname=''<var>, <var>$title=''</var>,<var>$bottom_label=''</var>,<var>$config=array()</var>)</h2>
+<p>Create and save the pie image, returns a three element array with path to image, image width and height based on data given.</p>
+<p>
+<p class="important"><strong>Note:</strong> the generated image names are in the form:
+&nbsp;&nbsp;&nbsp;&nbsp;"pie-".random_string('alnum', 16).".png" (unless you use the imgname parameter)</p>
+<var>$r </var>:<br />
+Integer.The pie's radius.
+<p>
+<var>$percents</var>:<br />
+N elements array containing the values to put into the pie.If the sum is higher than 100, values are normalized.<br />
+<code>$percents = array(13,34,19,4,20,10,20,10);</code>
+</p>
+<p>
+<var>$legend</var>:<br />
+N elements array (<strong>MUST HAVE</strong> the same lenght of $percents array ) containing names associated to $percents array.<br />
+<code>$legend = array('one','two','tree','four','five','six','seven','eight');</code>
+</p>
+<p>
+<var>$imgname</var>:<br />
+String, optional.The image filename.If you provide this parameter, Charts library uses this as the image name instead the random one.<br />
+</p>
+<p>
+<var>$title</var>:<br />
+String, optional. The image title (it will be placed on top of the image).
+</p>
+<p>
+<var>$bottom_label</var>:<br />
+String, optional. An addictional label (it will be placed on right bottom of the image).
+</p>
+<p>
+<var>$config</var>:<br />
+Array, optional. The $config array lets you manipulate every characteristic inside the image: colors, fonts , pie type and so on. <br />
+Config keys , values and their meanings:
+<code>
+$config = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Skew'     => 90,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SpliceHeight'=>10,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SpliceDistance'=>0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'PieFontSize' => 8,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleFontSize' => 10,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LegendFontSize' => 8,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelFontSize' => 10,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'PieFontName' => 'tahoma.ttf',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleFontName' => 'tahoma.ttf',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LegendFontName' => 'tahoma.ttf',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelFontName' => 'tahoma.ttf',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleBGR' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleBGG' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleBGB' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleFGR' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleFGG' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleFGB' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgR' => 240,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgG' => 240,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgB' => 240,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BorderR' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BorderG' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BorderB' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LegendR' => 250,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LegendG' => 250,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LegendB' => 250,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelBGR' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelBGG' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelBGB' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelFGR' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelFGG' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelFGB' => 0<br />);</code>
+<ul>
+  <li><strong>Skew</strong> - Integer. 3D skew factor : range [0..90], if less than 90 the pie become 3D (Default: 90).</li>
+  <li><strong>SpliceHeight</strong> - Integer. The height of all splices. Works only for 3D pies, a zero value is not allowed from the pChart library. If you submit a zero, it will be automatically set at 1. (Default: 10)</li>
+  <li><strong>SpliceDistance</strong> - Integer. This parameter allows to draw an exploded pie, with splices distanciated by SpliceDistance value. If 0, the pie is not exploded.(Default: 0)</li>
+  <li><strong>PieFontSize</strong> - Integer. Font size for percentage values around the pie (Default: 8)</li>
+  <li><strong>TitleFontSize</strong> - Integer. Font size for title (Default: 10)</li>
+  <li><strong>LegendFontSize</strong> -Integer. Font size for pie legend (Default: 8)</li>
+  <li><strong>LabelFontSize</strong> - Integer. Font size for bottom label (Default: 10)</li>
+  <li><strong>PieFontName</strong> - String.Font type for percentage values around the pie (Default: 'tahoma.ttf')</li>
+  <li><strong>TitleFontName</strong> - String.Font type for title (Default: 'tahoma.ttf')</li>
+  <li><strong>LegendFontName</strong> - String.Font type for pie legend (Default: 'tahoma.ttf')</li>
+  <li><strong>LabelFontName</strong> - String.Font type for bottom label (Default: 'tahoma.ttf')</li>
+ <p class="important"><strong>Note:</strong> The previous are names of the files inside the <strong>fonts</strong> folder.</p>
+  <li><strong>TitleBGR</strong> - Integer.Red component of title background color (Default: 0)</li>
+  <li><strong>TitleBGG</strong> - Integer.Green component of title background color (Default: 0)</li>
+  <li><strong>TitleBGB</strong> - Integer.Blue component of title background color (Default: 0)</li>
+  <li><strong>TitleFGR</strong> - Integer.Red component of title foreground color (Default: 0)</li>
+  <li><strong>TitleFGG</strong> - Integer.Green component of title foreground color (Default: 0)</li>
+  <li><strong>TitleFGB</strong> - Integer.Blue component of title foreground color (Default: 0)</li>
+  <li><strong>ImgR</strong> - Integer.Red component of image background color (Default: 240)</li>
+  <li><strong>ImgG</strong> - Integer.Green component of image background color (Default: 240)</li>
+  <li><strong>ImgB</strong> - Integer.Blue component of image background color (Default: 240)</li>
+  <li><strong>BorderR</strong> - Integer.Red component of border color (Default: 0)</li>
+  <li><strong>BorderG</strong> - Integer.Green component of border color (Default: 0)</li>
+  <li><strong>BorderB</strong> - Integer.Blue component of border color (Default: 0)</li>
+  <li><strong>LegendR</strong> - Integer.Red component of legend background color (Default: 250)</li>
+  <li><strong>LegendG</strong> - Integer.Green component of legend background color (Default: 250)</li>
+  <li><strong>LegendB</strong> - Integer.Blue component of legend background color (Default: 250)</li>
+  <li><strong>LabelBGR</strong> - Integer.Red component of bottom label background color (Default: 0)</li>
+  <li><strong>LabelBGG</strong> - Integer.Green component of bottom label background color (Default: 0)</li>
+  <li><strong>LabelBGB</strong> - Integer.Blue component of bottom label background color (Default: 0)</li>
+  <li><strong>LabelFGR</strong> - Integer.Red component of bottom label background color (Default: 0)</li>
+  <li><strong>LabelFGG</strong> - Integer.Green component of bottom label background color (Default: 0)</li>
+  <li><strong>LabelFGB</strong> - Integer.Blue component of bottom label background color (Default: 0)</li>
+</ul>
+</p>
+<h1><a name="basic">&nbsp;</a>Basic Usage</h1>
+
+<h2>Simple 2D pie chart with legend, no title, no bottom label</h2>
+<p>In your controller:</p>
+<code>
+$this->load->library('charts');<br /><br />
+$percents = array(19,34,13,20,10,4);<br /><br />
+$legend   = array('one','two','tree','four','five','six');<br /><br />
+$data['image'] = $this->charts->pieChart(70,$percents,$legend);<br /><br />
+$this->load->view('charts',$data);<br /></code>
+<p>In your charts.php view:</p>
+<code>&lt;img src="&lt;?=$image['name']?&gt;" width="&lt;?=$image['w']?&gt;" height="&lt;?=$image['h']?&gt;" /></code>
+<p>To show this image:</p>
+<img src="../images/pie1.png" width="281" height="196" />
+
+<br /><br />
+<h1><a name="advanced">&nbsp;</a>Advanced Usage</h1>
+<h2>2D exploded pie chart with legend, title, bottom label, different title font.</h2>
+<code>
+$config = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SpliceDistance'=>10,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleFontSize' => 16,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleFontName' => 'pf_arma_five.ttf');<br /><br />
+$percents = array(19,34,13,20,10,4);<br /><br />
+$legend   = array('one','two','tree','four','five','six');<br /><br />
+$title = 'This is a title';<br /><br />
+$bottom_label='bottom label';<br /><br />
+$data['image'] = $this->charts->pieChart(100,$percents,$legend,'',$title,$bottom_label,$config);<br /><br />	
+</code>
+<p>To show :</p>
+<img src="../images/pie2.png" width="392" height="297" />
+
+<br />
+<h2>3D exploded pie chart with legend, title, bottom label, some custom colors.</h2>
+<code>
+$config = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Skew'     => 50,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SpliceDistance'=>10,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleFontSize' => 16,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleBGR' => 160,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleFGG' => 120,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgR' => 200,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgG' => 200,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgB' => 200,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LegendR' => 150,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelBGR' => 80,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelBGG' => 40,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelBGB' => 870,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelFGR' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelFGG' => 120,<br />
+);<br /><br />
+$percents = array(19,34,13,20,10,4);<br /><br />
+$legend   = array('one','two','tree','four','five','six');<br /><br />
+$title = 'This is a title';<br /><br />
+$bottom_label='bottom label';<br /><br />
+$data['image'] = $this->charts->pieChart(100,$percents,$legend,'',$title,$bottom_label,$config);	<br />
+</code>
+<p>To show :</p>
+<img src="../images/pie3.png" width="392" height="251" /><br />
+
+<h2>The WEIRD example!</h2>
+<code>
+$config = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Skew'     => 60,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SpliceDistance'=>40,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SpliceHeight'=>120,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleFontSize' => 18,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LegendFontSize' => 12,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelFontSize' => 28,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'PieFontSize' => 20,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'PieFontName' => 'GeosansLight.ttf',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleFontName' => 'MankSans.ttf',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LegendFontName' => 'tahoma.ttf',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelFontName' => 'Silkscreen.ttf',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleBGR' => 250,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleBGG' => 70,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleBGB' => 20,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleFGR' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleFGG' => 240,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TitleFGB' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgR' => 120,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgG' => 180,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgB' => 80,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BorderR' => 20,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BorderG' => 60,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BorderB' => 80,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LegendR' => 20,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LegendG' => 250,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LegendB' => 20,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelBGR' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelBGG' => 10,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelBGB' => 240,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelFGR' => 250,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelFGG' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LabelFGB' => 0);<br /><br />
+
+$percents = array(19,34,13,20,10,4);<br /><br />
+$legend   = array('one','two','CodeIgniter is a powerful PHP framework with a very small footprint, built for PHP coders ','four','five','six');<br /><br />
+$title = 'This is a title';<br /><br />
+$bottom_label='bottom label';<br /><br />
+$data['image'] = $this->charts->pieChart(100,$percents,$legend,'',$title,$bottom_label,$config);	<br />
+</code>
+<p>To show :</p>
+<img src="../images/pie4.png" width="1125" height="467" /><br />
+<p class="important"><strong>Note:</strong> the developer does not need to calculate anything (that is the very annoying phase of  charts development). The Charts Library does it in order to fit at best all the image pieces based on radius, font size, labels lenght,skew factor, etc. </p>
+
+<h2>function cartesianChart(<var>$type</var>,<var>$x</var>,<var>$y</var>,<var>$w</var>,<var>$h</var>,<var>$imgname=''</var>,<var>$config=array()</var>)</h2>
+<p>Create and save the cartesian graph, returns a three element array with path to image, image width and height.</p>
+<p class="important"><strong>Note:</strong> the generated image names are in the form:
+&nbsp;&nbsp;&nbsp;&nbsp;"$type-".random_string('alnum', 16).".png" (unless you use the imgname parameter)</p>
+<p><var>$type </var>:<br />
+String. The graph type. Possible values:
+<ul>
+<li><strong>bar</strong> : draw a bar chart</li> 
+<li><strong>line</strong> : draw a line chart</li>
+<li><strong>cubic</strong> :draw a cubic line chart (filled or not)</li>
+</ul>
+</p>
+<p>
+<var>$x</var>:<br />
+N elements array containing the X axis values .<br />
+<code>$x = array(1,2,3,4,5,6,7,8,9,10);</code>
+</p>
+<p>
+<var>$y</var>:<br />
+N elements array containing the Y axis values (<strong>MUST HAVE</strong> the same lenght of $x array ).<br />
+<code>$y = array(1,2,3,4,5,6,7,8,9,10);</code>
+</p>
+<p>
+<var>$w</var>:<br />
+Integer. The image's width.<br />
+</p>
+<p>
+<var>$h</var>:<br />
+Integer. The image's height.<br />
+</p>
+<p>
+<var>$imgname</var>:<br />
+String, optional.The image filename.If you provide this parameter, Charts library uses this as the image name instead the random one.<br />
+</p>
+<p>
+<var>$config</var>:<br />
+Array, optional. The $config array lets you manipulate every characteristic inside the image: colors, fonts and so on. <br />
+Config keys , values and their meanings:
+<code>
+$config = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'FontName' => 'tahoma.tff',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'FontSize'=>10,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Logo' => '',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'XLogo' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'YLogo' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LogoTransparency' => 20,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Xlabel' => 'x label',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'XAxisFormat' => 'number',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'XAxisUnit' => '',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'XAngle' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Ylabel' => 'y label',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'YAxisFormat' => 'number',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'YAxisUnit' => '',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Legend'=>'',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LegendFontSize'=>8,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LegendFontName' => 'tahoma.tff',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Textbox' => '',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TextboxFontName' => 'tahoma.ttf',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TextboxFontSize' => 8,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BGR' => 132,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BGG' => 173,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BGB' => 131,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Decay' => 80,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgR' => 163,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgG' => 203,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgB' => 167,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Decay2' => 80,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'DataR' => 191,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'DataG' => 120,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'DataB' => 71,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Filled' => '',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LBR' => 226,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LBG' => 228,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LBB' => 230,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LR' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LG' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LB' => 0,<br />);</code>
+<ul>
+  <li><strong>FontName</strong> - String.Font type of X and Y data and labels (Default: 'tahoma.ttf').</li>
+  <li><strong>FontSize</strong> - Integer. Font size of X and Y data and labels (Default: 8).</li>
+  <li><strong>Logo</strong> - String. Merge an external PNG,JPG or GIF picture (Default: '').</li>
+  <li><strong>XLogo</strong> - Integer. Horizontal distance (in pixels) between the top left corner of the graph area and the top left corner of the image to merge, negative values are allowed (Default: 0)</li>
+  <li><strong>YLogo</strong> - Integer. Vertical distance (in pixels) between the top left corner of the graph area and the top left corner of the image to merge, negative values are allowed (Default: 0)</li>
+  <li><strong>LogoTransparency</strong> - Integer. Transparency of the external image to merge (Default: 20)</li>
+  <li><strong>Xlabel</strong> - String. Label for X data (Default: 'x label')</li>
+  <li><strong>XAxisFormat</strong> - String. Format of X data, possible values:
+  <ul>
+	<li><strong>number</strong> : integer values</li> 
+	<li><strong>time</strong> : amount of seconds will be displayed as HH:MM:SS</li>
+	<li><strong>date</strong> : unix timestamp will be displayed as a date</li>
+	<li><strong>metric</strong> : number that will be displayed with k/m/g units (not tested)</li>
+	<li><strong>currency</strong> : currency with custom unit (not tested)</li>
+	</ul>
+  (Default: 'number')</li>
+  <li><strong>XAxisUnit</strong> - String. Set the axis unit. This will be appended to the axis values.(Default: '')</li>
+  <li><strong>XAngle</strong> - Integer. Rotate x axis values of the given angle (Default: 0)</li>
+  <li><strong>Ylabel</strong> - String. Label for Y data (Default: 'y label')</li>
+  <li><strong>YAxisFormat</strong> - String.See XAxisFormat</li>
+  <li><strong>YAxisUnit</strong> - String.See XAxisUnit</li>
+  <li><strong>Legend</strong> -String. Content of the optional legend (Default: '')</li>
+  <li><strong>LegendFontSize</strong> - Integer. Font size for legend (Default: 8)</li>
+  <li><strong>LegendFontName</strong> - String.Font type for legend (Default: 'tahoma.ttf')</li>
+  <li><strong>Textbox</strong> - String. Content of the optional bottom Textbox (Default: '')</li>
+  <li><strong>TextboxFontName</strong> - String.Font type for textbox (Default: 'tahoma.ttf')</li>
+  <li><strong>TextboxFontSize</strong> - Integer. Font size for textbox (Default: 8)</li>
+  <li><strong>ImgR</strong> - Integer.Red component of image background color (Default: 132)</li>
+  <li><strong>ImgG</strong> - Integer.Green component of image background color (Default: 173)</li>
+  <li><strong>ImgB</strong> - Integer.Blue component of image background color (Default: 131)</li>
+  <li><strong>Decay</strong> -  Integer.Decay of graph area background color (Default: 80)</li>
+  <li><strong>BGR</strong> - Integer.Red component of graph area background color (Default: 163)</li>
+  <li><strong>BGG</strong> - Integer.Green component of graph area background color (Default: 203)</li>
+  <li><strong>BGB</strong> - Integer.Blue component of graph area background color (Default: 167)</li>
+  <li><strong>Decay2</strong> - Integer.Decay of graph area background color (Default: 80)</li>
+  <li><strong>DataR</strong> - Integer.Red component of data color (Default: 191)</li>
+  <li><strong>DataG</strong> - Integer.Green component of data color (Default: 120)</li>
+  <li><strong>DataB</strong> - Integer.Blue component of data color (Default: 71)</li>
+  <li><strong>Filled</strong> - String.Fill the cubic curve, works only if $type='cubic' (Default: '')</li>
+  <li><strong>LBG</strong> - Integer.Green component of legend background olor (Default: 226)</li>
+  <li><strong>LBB</strong> - Integer.Blue component of legend background color (Default: 228)</li>
+  <li><strong>LBR</strong> - Integer.Red component of legend background color (Default: 230)</li>
+  <li><strong>LG</strong> - Integer.Green component of legend text color (Default: 0)</li>
+  <li><strong>LB</strong> - Integer.Blue component of legend text  color (Default: 0)</li>
+  <li><strong>LR</strong> - Integer.Red component of legend text  color (Default: 0)</li>
+</ul>
+</p>
+<h1><a name="basic">&nbsp;</a>Basic Usage</h1>
+
+<h2>Simple bar chart, no legend, no bottom textbox</h2>
+<p>In your controller:</p>
+<code>
+$this->load->library('charts');<br /><br />
+$x=array(12,20,26,47,49,84,110,120,130);<br /><br />
+$y=array(193,77,669,51,476,550,51,555,234);<br /><br />
+$data['image'] = $this->charts->cartesianChart('bar',$x,$y,500,250);<br /><br />
+$this->load->view('charts',$data);<br /></code>
+<p>In your charts.php view:</p>
+<code>&lt;img src="&lt;?=$image['name']?&gt;" width="&lt;?=$image['w']?&gt;" height="&lt;?=$image['h']?&gt;" /></code>
+<p>To show this image:</p>
+<img src="../images/bar.png" width="500" height="250" />
+
+<br /><br />
+<h1><a name="advanced">&nbsp;</a>Advanced Usage</h1>
+<h2>Line chart with legend, textbox, custom color, custom fonts.</h2>
+<code>
+$config =array('Legend'=>'This is a legend',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LegendFontName' => 'GeosansLight.ttf',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LegendFontSize' => 15,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Textbox' => "This is a TextBox",<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TextboxFontSize' => 12,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'TextboxFontName' => 'Silkscreen.ttf',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Xlabel' => 'number of days',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Ylabel' => 'citizens',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgR' => 132,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgG' => 153,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgB' => 172,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BGR' => 162,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BGG' => 183,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BGB' => 202);<br /><br />
+$x=array(12,20,26,47,49,84,110,120,130);<br /><br />
+$y=array(193,77,669,51,476,550,51,555,234);<br /><br />
+$data['image'] = $this->charts->cartesianChart('line',$x,$y,700,300,"",$config);<br /><br />	
+</code>
+<p>To show :</p>
+<img src="../images/line.png" width="700" height="300" /><br />
+<h2>Cubic filled line chart with legend, textbox, custom color, external merged image and rotated X axis data (in date format).</h2>
+
+<code>
+$config = array('Logo' => "logoCI.jpg",<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LogoTransparency' => 20,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'XAxisFormat' => 'date',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'XAngle' => 45,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Textbox' => "This is a Textbox",<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Legend'=>'This is a legend',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgR' => 90,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgG' => 90,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ImgB' => 90,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Decay' => 90,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Filled' => 'yes',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BGR' => 40,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BGG' => 40,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'BGB' => 40,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Decay2' => -50,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'DataR' => 188,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'DataG' => 224,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'DataB' => 46,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LBR' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LBG' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LBB' => 0,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LR' => 255,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LG' => 255,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LB' => 255);<br /><br />
+
+$x=array(1204561425,1204561800,1204621756,1204770143,1204902916,1205035584,1205045584,1205055584,1205065584);<br /><br />
+$y=array(193,900,669,31, 476,550,31, 476,550);<br /><br />
+$data['image'] = $this->charts->cartesianChart('cubic',$x,$y,700,300,"cubic.png",$config);<br /><br />
+</code>
+<p>To show :</p>
+<img src="../images/cubic.png" width="700" height="300" />
+
+<p>Maybe you don't like default values of colors and other stuff. To change them edit the $settings array in the Charts.php library file </p>
+<br />
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href=""></a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href=""></a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2008 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+<img src="<?=base_url().$image['name']?>" width="<?=$image['w']?>" height="<?=$image['h']?>" />
