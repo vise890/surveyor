@@ -8,7 +8,7 @@ Surveyor is a data entry software. The main features are:
 
 This is a fork of my project for [Shelter Associates](http://shelter-associates.org/) to help them inputting data in their database, but with a bit of work, it could be adopted to be more flexible.
 
-Surveyor is quite messy at this stage. So use at your own risk.
+Surveyor is quite messy at this stage. Use at your own risk :)
 
 # If this gets published, please note:
 - Login and general security are not implemented
