@@ -1,19 +1,28 @@
-New features that should be developed by the next volunteer:
+# Surveyor
+Surveyor is a data entry software. The main features are:
 
-If you publish the website please:
-- Login and general security
-- if the data entry system gets pushed to the cloud, a more serious approach to security should be taken. Data on the server side is often not validated (admin panel, many-to-one fields..)
-- Slumlevel data entry
+- Expandable surveys
+- Multiple survey sets (via cities)
+- Export capabilities
+- Basic graphing facilities
+
+This is a fork of my project for [Shelter Associates](http://shelter-associates.org/) to help them inputting data in their database, but with a bit of work, it could be adopted to be more flexible.
+
+Surveyor is quite messy at this stage. So use at your own risk.
+
+# If this gets published, please note:
+- Login and general security are not implemented
+- A more serious approach to security should be taken. Data on the server side is often not validated (admin panel, many-to-one fields..)
 - Minify the jscript n use only the relevant bits of the jquery libraries (now the development, complete version of jquery is being used)
 - look through all the controller methods. some of them might be dangerous if used maliciously (e.g. empty folder can empty whatever folder if permissions are right)
 - ensure that validation rules check the length of the value entered. this must match the db field limit ( i haven't implemented this at all). you should do this and maybe tweak the db so that fields are only as long as they're needed.
 
-Really important stuff & BUGS
+# Next Features & Known BUGS
 - Add Delete/Edit capabilities for surveys
-- Add code to avoid duplicate surveys to be input. This should be done like this : if there is a house with the same house number in the same slum in the same city, don't add the survey
+- Add code to avoid duplicate surveys to be input. 
 - Apparently a few surveys are not being exported. Investigate the problem and fix it.
 
-Improvements to the data entry:
+## Improvements to the data entry:
 - Functionality to Rename drop down menu options (Update existing entries in the db AS WELL)
 - CRUD tabs and develop admin panel so that the tab a field belongs to can be changed 
 - Improve the way fields are reordered (maybe by tab or something, make fields draggable to new tabs to change their tab .. etc)
@@ -47,12 +56,8 @@ Improvements to the data entry:
 - website relies quite heavily on js to solve certain issues. (i.e. to select slum name in the fields, to validate fields). their server counterpart should be added!
 - piecharts with more than 8 slices fail as the cigniter class cannot generate more colors or something . i have just suppressed the notices so that the charts gets shown anyway (even if slices are pitch black after the 8th one). this should be fixed
 
-BUGS
 
-
-
-
-Oher Stuff
+# Oher Stuff
 - Attach CSV to Geomedia: http://dominoc925.blogspot.com/2009/08/quickly-attach-xlscsvdbf-files-in.html
 - Investigate the GRASS-GIS package. It is free and can be used in conjunction to a central network database (MySQL). Pratima has expressed the need for producing open format GIS files as sometimes they are preferred by the local governments. I will assess if switching to GRASS is a feasible option for Shelter.
 - Investigate what systems can be used to display GIS data on the website. It seems like this could be done dynamically with a combination of GRASS-GIS and GeoServer  or with Geomajas . It is unlikely however that this kind of system will be running by the end of the placement. I will prepare a manual with the information I gather so that the next volunteer can pick up from where we left off.
